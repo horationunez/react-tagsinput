@@ -39,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/olahol/react-tagsinput"
+    "url": "https://github.com/petrovicigor/react-tagsinput"
   },
   "keywords": [
     "react",
@@ -52,10 +52,10 @@
   "author": "Ola Holmström",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/olahol/react-tagsinput/issues"
+    "url": "https://github.com/petrovicigor/react-tagsinput/issues"
   },
   "standard": {
     "parser": "babel-eslint"
   },
-  "homepage": "https://github.com/olahol/react-tagsinput"
+  "homepage": "https://github.com/petrovicigor/react-tagsinput"
 }
