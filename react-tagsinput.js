@@ -154,9 +154,6 @@
       'span',
       _extends({ key: key }, other),
       getTagDisplayValue(tag)
-      // !disabled && _react2.default.createElement('a', { className: classNameRemove, onClick: function onClick(e) {
-      //     return onRemove(key);
-      //   } })
     );
   }
 
