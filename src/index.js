@@ -31,9 +31,9 @@ function defaultRenderTag (props) {
   return (
     <span key={key} {...other}>
       {getTagDisplayValue(tag)}
-      {!disabled &&
-        <a className={classNameRemove} onClick={(e) => onRemove(key)} />
-      }
+      {/*{!disabled &&*/}
+      {/*  <a className={classNameRemove} onClick={(e) => onRemove(key)} />*/}
+      {/*}*/}
     </span>
   )
 }
@@ -84,6 +84,8 @@ class TagsInput extends React.Component {
     this.state = {tag: '', isFocused: false}
     this.focus = ::this.focus
     this.blur = ::this.blur
+    this.handleClickOutside = ::this.handleClickOutside
+    this.handleKeyDownOnTags = ::this.handleKeyDownOnTags
   }
 
   static propTypes = {
@@ -411,6 +413,8 @@ class TagsInput extends React.Component {
   }
 
   componentDidMount () {
+    document.addEventListener('mousedown', this.handleClickOutside);
+
     if (this.hasControlledInput()) {
       return
     }
@@ -418,6 +422,54 @@ class TagsInput extends React.Component {
     this.setState({
       tag: this.inputValue(this.props)
     })
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (this.state.focusedTagIndex !== undefined && prevState.focusedTagIndex !== this.state.focusedTagIndex) {
+      this.tags.children[this.state.focusedTagIndex].focus()
+    }
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('mousedown', this.handleClickOutside)
+  }
+
+  handleClickOutside(e) {
+    e.stopImmediatePropagation()
+
+    if (this.div && e.target.className !== 'react-tagsinput-tag') {
+      if (this.state.focusedTagIndex) {
+        this.setState({
+          focusedTagIndex: undefined
+        })
+      }
+    } else {
+
+      this.setState({ focusedTagIndex: parseInt(e.target.dataset.index, 10) })
+    }
+  }
+
+
+  handleKeyDownOnTags(e) {
+    const {value} = this.props
+
+    if (e.keyCode === 8 && value.length > 0 && this.state.focusedTagIndex !== undefined) {
+      e.preventDefault()
+
+      let focusedTagIndex = this.state.focusedTagIndex;
+
+      this._removeTag(this.state.focusedTagIndex)
+
+      if (focusedTagIndex === 0) {
+        this.setState({
+          focusedTagIndex: 0
+        })
+      } else {
+        this.setState({
+          focusedTagIndex: --focusedTagIndex
+        })
+      }
+    }
   }
 
   componentWillReceiveProps (nextProps) {
@@ -472,11 +524,14 @@ class TagsInput extends React.Component {
 
     let tagComponents = value.map((tag, index) => {
       return renderTag({
+        ref: r => { this.tag = r },
         key: index,
+        'data-index': index,
         tag,
         onRemove: ::this.handleRemove,
         disabled,
         getTagDisplayValue: ::this._getTagDisplayValue,
+        tabIndex: "-1",
         ...tagProps
       })
     })
@@ -495,7 +550,9 @@ class TagsInput extends React.Component {
 
     return (
       <div ref={r => { this.div = r }} onClick={::this.handleClick} className={className}>
-        {renderLayout(tagComponents, inputComponent)}
+        {renderLayout(<div style={{"display": "inline-block"}}
+                           ref={r => { this.tags = r }}
+                           onKeyDown={this.handleKeyDownOnTags}>{tagComponents}</div>, inputComponent)}
       </div>
     )
   }

@@ -21,24 +21,24 @@ class Examples extends React.Component {
   render () {
     return (
       <div>
-        <h2>Simple</h2>
-        <SimpleExample />
-        <hr />
+        {/*<h2>Simple</h2>*/}
+        {/*<SimpleExample />*/}
+        {/*<hr />*/}
         <h2>Auto size</h2>
         <AutosizeExample />
-        <hr />
-        <h2>Auto complete</h2>
-        <AutocompleteExample />
-        <hr />
-        <h2>Email</h2>
-        <EmailExample />
-        <h2>Form</h2>
-        <FormExample />
-        <h2>Auto add</h2>
-        <AutoaddExample />
-        <h2>Validation callback</h2>
-        <p>Each tag must have the format <code>min-max</code>, where <code>min</code> and <code>max</code> are integers and <code>min</code> &le; <code>max</code>.</p>
-        <ValidationCallbackExample />
+        {/*<hr />*/}
+        {/*<h2>Auto complete</h2>*/}
+        {/*<AutocompleteExample />*/}
+        {/*<hr />*/}
+        {/*<h2>Email</h2>*/}
+        {/*<EmailExample />*/}
+        {/*<h2>Form</h2>*/}
+        {/*<FormExample />*/}
+        {/*<h2>Auto add</h2>*/}
+        {/*<AutoaddExample />*/}
+        {/*<h2>Validation callback</h2>*/}
+        {/*<p>Each tag must have the format <code>min-max</code>, where <code>min</code> and <code>max</code> are integers and <code>min</code> &le; <code>max</code>.</p>*/}
+        {/*<ValidationCallbackExample />*/}
       </div>
     )
   }

@@ -10,6 +10,10 @@
   border-color: #a5d24a;
 }
 
+.react-tagsinput:focus {
+  background: red;
+}
+
 .react-tagsinput-tag {
   background-color: #cde69c;
   border-radius: 2px;
