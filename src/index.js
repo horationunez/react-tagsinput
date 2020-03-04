@@ -437,7 +437,7 @@ class TagsInput extends React.Component {
   handleClickOutside(e) {
     e.stopImmediatePropagation()
 
-    if (this.div && e.target.className !== 'react-tagsinput-tag') {
+    if (this.div && e.target.className !== usedTagsClassName) {
       if (this.state.focusedTagIndex) {
         this.setState({
           focusedTagIndex: undefined
