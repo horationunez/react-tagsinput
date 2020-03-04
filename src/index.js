@@ -550,7 +550,7 @@ class TagsInput extends React.Component {
 
     return (
       <div ref={r => { this.div = r }} onClick={::this.handleClick} className={className}>
-        {renderLayout(<div style={{"display": "inline-block"}}
+        {renderLayout(<div style={{"display": "inline"}}
                            ref={r => { this.tags = r }}
                            onKeyDown={this.handleKeyDownOnTags}>{tagComponents}</div>, inputComponent)}
       </div>
