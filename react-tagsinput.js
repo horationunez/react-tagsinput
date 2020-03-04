@@ -560,16 +560,19 @@
     }, {
       key: 'handleClickOutside',
       value: function handleClickOutside(e) {
-        e.stopImmediatePropagation();
+        e.stopPropagation();
 
-        if (this.div && e.target.className !== 'react-tagsinput-tag') {
+        var defaultTagsClassName = 'react-tagsinput-tag';
+        var tagsClassNameFromProps = this.props.tagProps && this.props.tagProps.className;
+        var usedTagsClassName = tagsClassNameFromProps || defaultTagsClassName;
+
+        if (this.div && e.target.className !== usedTagsClassName) {
           if (this.state.focusedTagIndex) {
             this.setState({
               focusedTagIndex: undefined
             });
           }
         } else {
-
           this.setState({ focusedTagIndex: parseInt(e.target.dataset.index, 10) });
         }
       }

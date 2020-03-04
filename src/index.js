@@ -435,7 +435,8 @@ class TagsInput extends React.Component {
   }
 
   handleClickOutside(e) {
-    e.stopImmediatePropagation()
+    e.stopPropagation()
+
     const defaultTagsClassName = 'react-tagsinput-tag';
     const tagsClassNameFromProps = this.props.tagProps && this.props.tagProps.className;
     const usedTagsClassName = tagsClassNameFromProps || defaultTagsClassName;
@@ -447,7 +448,6 @@ class TagsInput extends React.Component {
         })
       }
     } else {
-
       this.setState({ focusedTagIndex: parseInt(e.target.dataset.index, 10) })
     }
   }
