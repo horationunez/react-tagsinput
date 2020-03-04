@@ -685,7 +685,7 @@
             }, onClick: this.handleClick.bind(this), className: className },
           renderLayout(_react2.default.createElement(
             'div',
-            { style: { "display": "inline-block" },
+            { style: { "display": "inline" },
               ref: function ref(r) {
                 _this4.tags = r;
               },
