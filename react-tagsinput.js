@@ -153,10 +153,10 @@
     return _react2.default.createElement(
       'span',
       _extends({ key: key }, other),
-      getTagDisplayValue(tag),
-      !disabled && _react2.default.createElement('a', { className: classNameRemove, onClick: function onClick(e) {
-          return onRemove(key);
-        } })
+      getTagDisplayValue(tag)
+      // !disabled && _react2.default.createElement('a', { className: classNameRemove, onClick: function onClick(e) {
+      //     return onRemove(key);
+      //   } })
     );
   }
 
@@ -203,6 +203,8 @@
       _this.state = { tag: '', isFocused: false };
       _this.focus = _this.focus.bind(_this);
       _this.blur = _this.blur.bind(_this);
+      _this.handleClickOutside = _this.handleClickOutside.bind(_this);
+      _this.handleKeyDownOnTags = _this.handleKeyDownOnTags.bind(_this);
       return _this;
     }
 
@@ -536,6 +538,8 @@
     }, {
       key: 'componentDidMount',
       value: function componentDidMount() {
+        document.addEventListener('mousedown', this.handleClickOutside);
+
         if (this.hasControlledInput()) {
           return;
         }
@@ -543,6 +547,58 @@
         this.setState({
           tag: this.inputValue(this.props)
         });
+      }
+    }, {
+      key: 'componentDidUpdate',
+      value: function componentDidUpdate(prevProps, prevState) {
+        if (this.state.focusedTagIndex !== undefined && prevState.focusedTagIndex !== this.state.focusedTagIndex) {
+          this.tags.children[this.state.focusedTagIndex].focus();
+        }
+      }
+    }, {
+      key: 'componentWillUnmount',
+      value: function componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+      }
+    }, {
+      key: 'handleClickOutside',
+      value: function handleClickOutside(e) {
+        e.stopImmediatePropagation();
+
+        if (this.div && e.target.className !== 'react-tagsinput-tag') {
+          if (this.state.focusedTagIndex) {
+            this.setState({
+              focusedTagIndex: undefined
+            });
+          }
+        } else {
+
+          this.setState({ focusedTagIndex: parseInt(e.target.dataset.index, 10) });
+        }
+      }
+    }, {
+      key: 'handleKeyDownOnTags',
+      value: function handleKeyDownOnTags(e) {
+        var value = this.props.value;
+
+
+        if (e.keyCode === 8 && value.length > 0 && this.state.focusedTagIndex !== undefined) {
+          e.preventDefault();
+
+          var focusedTagIndex = this.state.focusedTagIndex;
+
+          this._removeTag(this.state.focusedTagIndex);
+
+          if (focusedTagIndex === 0) {
+            this.setState({
+              focusedTagIndex: 0
+            });
+          } else {
+            this.setState({
+              focusedTagIndex: --focusedTagIndex
+            });
+          }
+        }
       }
     }, {
       key: 'componentWillReceiveProps',
@@ -599,11 +655,16 @@
 
         var tagComponents = value.map(function (tag, index) {
           return renderTag(_extends({
+            ref: function ref(r) {
+              _this4.tag = r;
+            },
             key: index,
+            'data-index': index,
             tag: tag,
             onRemove: _this4.handleRemove.bind(_this4),
             disabled: disabled,
-            getTagDisplayValue: _this4._getTagDisplayValue.bind(_this4)
+            getTagDisplayValue: _this4._getTagDisplayValue.bind(_this4),
+            tabIndex: "-1"
           }, tagProps));
         });
 
@@ -625,7 +686,15 @@
           { ref: function ref(r) {
               _this4.div = r;
             }, onClick: this.handleClick.bind(this), className: className },
-          renderLayout(tagComponents, inputComponent)
+          renderLayout(_react2.default.createElement(
+            'div',
+            { style: { "display": "inline-block" },
+              ref: function ref(r) {
+                _this4.tags = r;
+              },
+              onKeyDown: this.handleKeyDownOnTags },
+            tagComponents
+          ), inputComponent)
         );
       }
     }]);
