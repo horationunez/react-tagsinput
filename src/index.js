@@ -28,12 +28,13 @@ function getClipboardData (e) {
 
 function defaultRenderTag (props) {
   let {tag, key, disabled, onRemove, classNameRemove, getTagDisplayValue, ...other} = props
+
   return (
-    <span key={key} {...other}>
+    <span key={key} {...other} data-is-tag={true}>
       {getTagDisplayValue(tag)}
-      {/*{!disabled &&*/}
-      {/*  <a className={classNameRemove} onClick={(e) => onRemove(key)} />*/}
-      {/*}*/}
+      {!disabled &&
+        <a className={classNameRemove} onClick={(e) => onRemove(key)} />
+      }
     </span>
   )
 }
@@ -437,18 +438,14 @@ class TagsInput extends React.Component {
   handleClickOutside(e) {
     e.stopPropagation()
 
-    const defaultTagsClassName = 'react-tagsinput-tag';
-    const tagsClassNameFromProps = this.props.tagProps && this.props.tagProps.className;
-    const usedTagsClassName = tagsClassNameFromProps || defaultTagsClassName;
-
-    if (this.div && e.target.className !== usedTagsClassName) {
+    if (this.div && e.target.dataset.isTag === 'true') {
+      this.setState({ focusedTagIndex: parseInt(e.target.dataset.index, 10) })
+    } else {
       if (this.state.focusedTagIndex) {
         this.setState({
           focusedTagIndex: undefined
         })
       }
-    } else {
-      this.setState({ focusedTagIndex: parseInt(e.target.dataset.index, 10) })
     }
   }
 
