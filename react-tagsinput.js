@@ -152,8 +152,11 @@
 
     return _react2.default.createElement(
       'span',
-      _extends({ key: key }, other),
-      getTagDisplayValue(tag)
+      _extends({ key: key }, other, { 'data-is-tag': true }),
+      getTagDisplayValue(tag),
+      !disabled && _react2.default.createElement('a', { className: classNameRemove, onClick: function onClick(e) {
+          return onRemove(key);
+        } })
     );
   }
 
@@ -562,18 +565,14 @@
       value: function handleClickOutside(e) {
         e.stopPropagation();
 
-        var defaultTagsClassName = 'react-tagsinput-tag';
-        var tagsClassNameFromProps = this.props.tagProps && this.props.tagProps.className;
-        var usedTagsClassName = tagsClassNameFromProps || defaultTagsClassName;
-
-        if (this.div && e.target.className !== usedTagsClassName) {
+        if (this.div && e.target.dataset.isTag === 'true') {
+          this.setState({ focusedTagIndex: parseInt(e.target.dataset.index, 10) });
+        } else {
           if (this.state.focusedTagIndex) {
             this.setState({
               focusedTagIndex: undefined
             });
           }
-        } else {
-          this.setState({ focusedTagIndex: parseInt(e.target.dataset.index, 10) });
         }
       }
     }, {
